@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.NVarChar(250)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Post      Post[]
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String
+  categoryId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  category   Category @relation(fields: [categoryId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  LastName  String
+  password  String   @db.NVarChar(500)
+  email     String   @unique
+  role      String   @default("Member")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   Profile?
+  posts     Post[]
+}
+
+model Profile {
+  id      Int    @id @default(autoincrement())
+  bio     String
+  address String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int    @unique //relation scalar field
+}
