@@ -32,3 +32,12 @@ export async function findAllPostWithPagination(
     },
   });
 }
+export async function CreatePost(data: any, user: any) {
+  const post = {
+    title: data.title,
+    content: data.content,
+    categoryId:data.categoryId,
+    userId: user.id,
+  }
+  return await prisma.post.create({ data: post });
+}

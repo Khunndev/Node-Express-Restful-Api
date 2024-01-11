@@ -33,8 +33,8 @@ app.use(
 app.use(passport.initialize());
 app.use("/", indexRouter); //localhost:4000
 app.use("/api/v1/user", userRouter); //localhost:4000/api/v1/user
-app.use("/api/v1/category",isAuthen, categoryRouter); //localhost:4000/api/v1/category
-app.use("/api/v1/post",isAuthen, postRouter); //localhost:4000/api/v1/post
+app.use("/api/v1/category",[isAuthen], categoryRouter); //localhost:4000/api/v1/category
+app.use("/api/v1/post",[isAuthen], postRouter); //localhost:4000/api/v1/post
 
 //use error middleware
 app.use(errorHandler);

@@ -8,10 +8,14 @@ import {
 import { validationResult } from "express-validator";
 import Jwt from "jsonwebtoken";
 export async function index(req: Request, res: Response) {
-  const { id } = req.params;
-  const user = await getUserDetailbyId(Number(id));
+  return res.status(200).json("User Controller");
+}
+
+export async function getuserinfo(req: Request, res: Response) {
+  const user = req.user as any;
   return res.status(200).json(user);
 }
+
 
 export async function register(
   req: Request,
@@ -59,7 +63,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
           user_role: userInfo.role,
         },
         jwt_key,
-        { expiresIn: "1m" }
+        { expiresIn: "7d" }
       );
 
       const tokendecode = Jwt.decode(token) as any;

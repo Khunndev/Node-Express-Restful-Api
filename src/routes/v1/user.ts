@@ -1,10 +1,12 @@
 import express from "express";
 // use express validator
 import { body } from "express-validator";
-import { index, login, register } from "../../controllers/user-controller";
+import { getuserinfo, index, login, register } from "../../controllers/user-controller";
+import { isAuthen } from "../../middleware/jwt-authen";
 const router = express.Router();
 
-router.get("/:id", index);
+router.get("/",[isAuthen], index);
+router.get("/profile",[isAuthen], getuserinfo);
 router.post(
   "/login",
   [
