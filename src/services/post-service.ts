@@ -1,5 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "../db";
+import { saveImageToDisk } from "./upload-service";
+import { NextFunction } from "express";
 
 export async function findTotalsRecordPost() {
   return await prisma.post.count();
@@ -33,11 +35,21 @@ export async function findAllPostWithPagination(
   });
 }
 export async function CreatePost(data: any, user: any) {
-  const post = {
-    title: data.title,
-    content: data.content,
-    categoryId:data.categoryId,
-    userId: user.id,
+  try {
+    const post = {
+      title: data.title,
+      content: data.content,
+      categoryId: data.categoryId,
+      photo: await saveImageToDisk(data.photo),
+      userId: user.id,
+    };
+
+    await prisma.post.create({ data: post });
+    // If no errors occurred during post creation, return true
+    return true;
+  } catch (error) {
+    console.error('Error creating post:', error);
+    // If an error occurred during post creation, return false
+    return false;
   }
-  return await prisma.post.create({ data: post });
 }

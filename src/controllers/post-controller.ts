@@ -26,7 +26,11 @@ export async function publishPost(req: Request, res: Response,next:NextFunction)
     if (!validationError.isEmpty()) {
       return res.status(422).json(validationError.array());
     }
-    CreatePost(req.body,req.user);
+    const result = await CreatePost(req.body,req.user);
+    console.log(result);
+    if (!result) {
+      return res.status(400).json({ message: "Create Post Fail" });
+    }
     return res.status(201).json({ message: "Create Post Success" });
   } catch (error) {
     next(error);

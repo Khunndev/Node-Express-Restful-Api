@@ -19,6 +19,7 @@ model Post {
   id         Int      @id @default(autoincrement())
   title      String
   content    String
+  photo      String @default("nopic.png")
   categoryId Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
